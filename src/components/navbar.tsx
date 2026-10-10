@@ -1,9 +1,9 @@
 
 "use client";
 
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { Sun, Moon, Languages } from "lucide-react";
+import { Sun, Moon, Languages, Menu, X } from "lucide-react";
 
 const navigation = {
     en: [
@@ -33,8 +33,7 @@ function subscribeToPreferences(callback: () => void) {
 }
 
 function getSavedLanguage(): Language {
-    const savedLanguage = localStorage.getItem("dar-aya-language");
-    return savedLanguage === "ar" ? "ar" : "en";
+    return localStorage.getItem("dar-aya-language") === "ar" ? "ar" : "en";
 }
 
 function getSavedTheme(): boolean {
@@ -47,6 +46,8 @@ function savePreference(key: string, value: string) {
 }
 
 export function Navbar() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
     const language = useSyncExternalStore<Language>(
         subscribeToPreferences,
         getSavedLanguage,
@@ -58,33 +59,45 @@ export function Navbar() {
         getSavedTheme,
         () => false
     );
-    // Synchronize preferences with the document.
+
     useEffect(() => {
         document.documentElement.lang = language;
         document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
         document.documentElement.classList.toggle("dark", darkMode);
     }, [language, darkMode]);
 
+    // Close the mobile menu when the viewport reaches desktop size.
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+        const handleChange = () => {
+            if (mediaQuery.matches) setMenuOpen(false);
+        };
+
+        mediaQuery.addEventListener("change", handleChange);
+        return () => mediaQuery.removeEventListener("change", handleChange);
+    }, []);
+
     const isArabic = language === "ar";
+    const headerStyle = darkMode
+        ? "border-white/10 bg-black text-white"
+        : "border-black/10 bg-white text-black";
 
     return (
-        <header
-            className={`sticky top-0 z-50 border-b transition-colors ${darkMode
-                ? "border-white/10 bg-black text-white"
-                : "border-black/10 bg-white text-black"
-                }`}
-        >
+        <header className={`sticky top-0 z-50 border-b transition-colors ${headerStyle}`}>
             <nav
-                className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-6 lg:px-8"
+                className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
                 dir={isArabic ? "rtl" : "ltr"}
             >
                 <Link
                     href="/"
+                    onClick={() => setMenuOpen(false)}
                     className="shrink-0 text-xl font-medium tracking-[0.2em] transition-colors hover:text-[#C9A227]"
                 >
                     DAR AYA
                 </Link>
 
+                {/* Desktop navigation */}
                 <div className="hidden items-center gap-8 md:flex">
                     {navigation[language].map((item) => (
                         <Link
@@ -97,7 +110,8 @@ export function Navbar() {
                     ))}
                 </div>
 
-                <div className="flex shrink-0 items-center gap-3 sm:gap-5">
+                <div className="flex shrink-0 items-center gap-2 sm:gap-5">
+                    {/* Language switcher */}
                     <button
                         type="button"
                         onClick={() =>
@@ -113,31 +127,75 @@ export function Navbar() {
                         {isArabic ? "EN" : "AR"}
                     </button>
 
+                    {/* Theme switcher */}
                     <button
                         type="button"
                         onClick={() =>
-                            savePreference("dar-aya-theme", darkMode ? "light" : "dark")
+                            savePreference(
+                                "dar-aya-theme",
+                                darkMode ? "light" : "dark"
+                            )
                         }
                         aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
                         className="flex h-9 w-9 items-center justify-center transition-colors hover:text-[#C9A227]"
                     >
                         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
+
+                    {/* Desktop login */}
                     <Link
                         href="/login"
                         className="hidden text-xs font-medium uppercase tracking-[0.15em] transition-colors hover:text-[#C9A227] sm:block"
                     >
                         {isArabic ? "تسجيل الدخول" : "Login"}
                     </Link>
+
+                    {/* Mobile menu toggle */}
                     <button
                         type="button"
-                        aria-label={isArabic ? "فتح القائمة" : "Open menu"}
-                        className="text-xs font-medium transition-colors hover:text-[#C9A227] md:hidden"
+                        onClick={() => setMenuOpen((open) => !open)}
+                        aria-label={menuOpen
+                            ? (isArabic ? "إغلاق القائمة" : "Close menu")
+                            : (isArabic ? "فتح القائمة" : "Open menu")}
+                        aria-expanded={menuOpen}
+                        aria-controls="mobile-navigation"
+                        className="flex h-10 w-10 items-center justify-center rounded-md transition-colors hover:bg-[#C9A227]/10 hover:text-[#C9A227] md:hidden"
                     >
-                        {isArabic ? "القائمة" : "Menu"}
+                        {menuOpen ? <X size={22} /> : <Menu size={22} />}
                     </button>
                 </div>
             </nav>
+
+            {/* Mobile dropdown */}
+            {menuOpen && (
+                <div
+                    id="mobile-navigation"
+                    dir={isArabic ? "rtl" : "ltr"}
+                    className={`absolute inset-x-0 top-full z-50 border-b shadow-lg md:hidden ${headerStyle} ${darkMode ? "border-t-white/10" : "border-t-black/10"
+                        }`}
+                >
+                    <div className="mx-auto flex max-w-7xl flex-col px-5 py-3">
+                        {navigation[language].map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => setMenuOpen(false)}
+                                className="border-b border-[#C9A227]/15 py-4 text-sm font-medium transition-colors last:border-b-0 hover:text-[#C9A227]"
+                            >
+                                {item.label}
+                            </Link>
+                        ))}
+
+                        <Link
+                            href="/login"
+                            onClick={() => setMenuOpen(false)}
+                            className="py-4 text-sm font-medium transition-colors hover:text-[#C9A227]"
+                        >
+                            {isArabic ? "تسجيل الدخول" : "Login"}
+                        </Link>
+                    </div>
+                </div>
+            )}
         </header>
     );
 }
