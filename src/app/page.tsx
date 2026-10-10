@@ -1,69 +1,133 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function WelcomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="bg-white text-black">
+      {/* SECTION 1 — HERO */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
+        {/* Decorative corners */}
+        <div className="absolute left-8 top-8 h-20 w-20 border-l border-t border-[#C9A227] sm:left-12 sm:top-12" />
+        <div className="absolute bottom-8 right-8 h-20 w-20 border-b border-r border-[#C9A227] sm:bottom-12 sm:right-12" />
+
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <span className="mb-6 text-xs font-medium uppercase tracking-[0.45em] text-[#C9A227]">
+            Luxury Wedding & Gifts
+          </span>
+
+          <h1 className="text-6xl font-light tracking-[0.18em] sm:text-7xl md:text-8xl">
+            DAR AYA
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <div className="mt-7 h-px w-16 bg-[#C9A227]" />
+
+          <p className="mt-7 max-w-md text-sm leading-7 tracking-wide text-black/70 sm:text-base">
+            Elegant details, meaningful gifts, and unforgettable moments
+            created especially for you.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <Link
+            href="/home"
+            className="mt-10 border border-black bg-black px-10 py-4 text-xs font-medium uppercase tracking-[0.25em] text-white transition-colors duration-300 hover:bg-[#C9A227] hover:text-black"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Explore Dar Aya
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* SECTION 2 — WHAT WE OFFER */}
+      <section className="flex min-h-screen items-center border-t border-black/10 px-6 py-24">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="mb-16 text-center">
+            <span className="text-xs font-medium uppercase tracking-[0.4em] text-[#C9A227]">
+              The Dar Aya Experience
+            </span>
+
+            <h2 className="mt-5 text-4xl font-light tracking-[0.12em] sm:text-5xl">
+              MADE FOR YOUR MOMENTS
+            </h2>
+
+            <div className="mx-auto mt-6 h-px w-12 bg-[#C9A227]" />
+          </div>
+
+          <div className="grid gap-px border border-black/10 bg-black/10 md:grid-cols-3">
+            <div className="bg-white p-10 text-center sm:p-14">
+              <span className="text-3xl font-light text-[#C9A227]">
+                I
+              </span>
+
+              <h3 className="mt-6 text-lg font-medium uppercase tracking-[0.15em]">
+                Weddings
+              </h3>
+
+              <p className="mt-5 text-sm leading-7 text-black/60">
+                Thoughtfully planned details and elegant touches designed
+                to make your celebration truly yours.
+              </p>
+            </div>
+
+            <div className="bg-white p-10 text-center sm:p-14">
+              <span className="text-3xl font-light text-[#C9A227]">
+                II
+              </span>
+
+              <h3 className="mt-6 text-lg font-medium uppercase tracking-[0.15em]">
+                Gifts
+              </h3>
+
+              <p className="mt-5 text-sm leading-7 text-black/60">
+                Meaningful gifts, beautifully presented and personalized
+                for the people and moments that matter.
+              </p>
+            </div>
+
+            <div className="bg-white p-10 text-center sm:p-14">
+              <span className="text-3xl font-light text-[#C9A227]">
+                III
+              </span>
+
+              <h3 className="mt-6 text-lg font-medium uppercase tracking-[0.15em]">
+                Personalization
+              </h3>
+
+              <p className="mt-5 text-sm leading-7 text-black/60">
+                From the smallest detail to the final presentation,
+                everything can be created especially for you.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 — CLOSING CTA */}
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 text-white">
+        {/* Decorative corners */}
+        <div className="absolute left-8 top-8 h-20 w-20 border-l border-t border-[#C9A227] sm:left-12 sm:top-12" />
+        <div className="absolute bottom-8 right-8 h-20 w-20 border-b border-r border-[#C9A227] sm:bottom-12 sm:right-12" />
+
+        <div className="relative z-10 max-w-2xl text-center">
+          <span className="text-xs font-medium uppercase tracking-[0.45em] text-[#C9A227]">
+            Your Story Starts Here
+          </span>
+
+          <h2 className="mt-7 text-5xl font-light tracking-[0.15em] sm:text-6xl md:text-7xl">
+            DAR AYA
+          </h2>
+
+          <div className="mx-auto mt-8 h-px w-16 bg-[#C9A227]" />
+
+          <p className="mx-auto mt-8 max-w-lg text-sm leading-8 tracking-wide text-white/70 sm:text-base">
+            Discover a world of elegant wedding details, thoughtful gifts,
+            and beautifully personalized moments.
+          </p>
+
+          <Link
+            href="/home"
+            className="mt-10 inline-block border border-[#C9A227] px-10 py-4 text-xs font-medium uppercase tracking-[0.25em] text-white transition-colors duration-300 hover:bg-[#C9A227] hover:text-black"
+          >
+            Enter Dar Aya
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }
